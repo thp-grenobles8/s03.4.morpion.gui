@@ -9,14 +9,11 @@ require 'views/index'
 require 'views/done'
 require 'app/_styles'
 require 'app/_put_slow'
+require 'app/_ascii'
 require 'app/cell'
 require 'app/board'
 require 'app/player'
 require 'app/game'
 
 
-board = Board.new.setup(3)
-game = Game.new
-# Index.new.perform
-
-pry
+Index.new.perform

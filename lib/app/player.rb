@@ -3,8 +3,22 @@ class Player
 
   def initialize (id)
     @id = id
-    put_slow "JOUEUR #{id} -- quel symbole ?"
-    @symbol = gets.chomp.to_s
+    choose_symbol
+    self
+  end
+
+  def choose_symbol
+    put_slow "JOUEUR #{id} -- quel symbole ?".bold.blue
+    choice = nil
+    choices = {1=> "O" ,2=> "X" , 3=> '🤪' ,4=> '✓' ,5=> '🤮', 6=> '💩' }
+    until choices.include?(choice)
+      print choices
+      puts ""
+      print "tapez l'index de votre choix >"
+      choice = gets.chomp.to_i
+    end
+    @symbol = choices[choice]
+    puts ''
     self
   end
 

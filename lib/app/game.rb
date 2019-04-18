@@ -77,8 +77,8 @@ class Game
     is_over = false
     is_over = is_over || check_rows
     is_over = is_over || check_columns
-    #is_over = is_over || check_diag_asc
-    #is_over = is_over || check_diag_des
+    is_over = is_over || check_diag_asc
+    is_over = is_over || check_diag_des
     return is_over
   end
 
@@ -107,11 +107,49 @@ class Game
       @board.data.each { |row|
         cell = row[ix]
         cell.status == player_id ? successive += 1 : successive = 1
-
         return over(player_id) if player_id != nil && successive >= @win
         player_id = cell.status
       }
     }
+    return false
+  end
+
+  def check_diag_asc
+    is_over = false
+    @board.index[:cols].values.each { |col_ix|
+      is_over = is_over || check_1_diag(col_ix, 0, true)
+    }
+    @board.index[:rows].values.each { |row_ix|
+      is_over = is_over || check_1_diag(0, row_ix, true)
+    }
+    is_over
+  end
+
+  def check_diag_des
+    is_over = false
+    @board.index[:cols].values.each { |col_ix|
+      is_over = is_over || check_1_diag(col_ix, 0, false)
+    }
+    @board.index[:rows].values.each { |row_ix|
+      is_over = is_over || check_1_diag(0, row_ix, false)
+    }
+    is_over
+  end
+
+  def check_1_diag (start_col, start_row, asc=true)
+    step = asc ? -1 : 1 #negatif si descendant
+    count = 0
+    player_id = nil
+    successive = 0
+    for col_ix in start_col..@board.index[:cols].values[-1]
+      row_ix = start_row + count*step
+      count += 1
+      return false if !@board.index[:rows].values.include?(row_ix)
+      cell = @board.data[row_ix][col_ix]
+      cell.status == player_id ? successive += 1 : successive = 1
+      return over(player_id) if player_id != nil && successive >= @win
+      player_id = cell.status
+    end
     return false
   end
 
@@ -123,6 +161,7 @@ class Game
       put_slow "MATCH NUL..."
     else
       winner = @players[winner-1]
+      put_slow Ascii.crown
       put_slow "  #{winner.symbol}  " +
         "JOUEUR #{winner.id} a GAGNE !!!".bold.blue
     end

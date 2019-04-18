@@ -57,7 +57,8 @@ class Board
     rendered = " "*(@game.graphics[:indent]-2) +
       @index[:rows].key(ix).to_s + ' '
     for cell in @data[ix]
-      rendered += @game.graphics[:vertical] + " " + cell.render.bold.blue + " "
+      rendered += @game.graphics[:vertical] + " " +
+        cell.render.bold.blue + " "
     end
     rendered += @game.graphics[:vertical]
     rendered
