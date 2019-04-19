@@ -75,10 +75,10 @@ class Game
 
   def check
     is_over = false
-    is_over = is_over || check_rows
     is_over = is_over || check_columns
     is_over = is_over || check_diag_asc
     is_over = is_over || check_diag_des
+    is_over = is_over || check_rows
     return is_over
   end
 
